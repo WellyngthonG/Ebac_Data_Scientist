@@ -1,21 +1,21 @@
 import pandas as pd
 
-# Carregar o arquivo CSV
 df = pd.read_csv('/data/ecommerce_ex4.csv', encoding='utf-8')
 
-# 1. Extrair e limpar os dados da coluna 'Condicao'
-# Criando a coluna 'Condicao_Atual' com a primeira palavra antes do '|'
-df['Condicao_Atual'] = df['Condicao'].apply(lambda x: x.split()[0])
+# Escreva seu código abaixo
 
-# 2. Criando a coluna 'Qtd_Vendidos' com a quantidade de itens vendidos ou "Nenhum"
-# Extraímos a parte que contém a quantidade de vendidos, após o ' ', caso exista
-df['Qtd_Vendidos'] = df['Condicao'].apply(lambda x: x.split()[4].split()[0] if '+Xmilvendidos' in x else 'Nenhum')
+# Extrair e limpar os dados da coluna 'Condicao'
+# A função lambda é usada aqui para pegar a primeira palavra da string na coluna 'Condicao'
+# x.split(' ')[0] pega a primeira palavra da string.
+df['Condicao_Atual'] = df['Condicao'].apply(lambda x: x.split(' ')[0].strip())
 
-# 3. Converter a coluna 'Desconto' para string
+# A função lambda é usada aqui para pegar a quinta palavra da string na coluna 'Condicao' se existir,
+# caso contrário, retorna 'Nenhum'
+df['Qtd_Vendidos'] = df['Condicao'].apply(lambda x: x.split(' ')[4].strip() if len(x.split(' ')) > 1 else 'Nenhum')
+
+
+# Converter a coluna 'Desconto' para string
 df['Desconto'] = df['Desconto'].astype(str)
 
-# 4. Modificar a coluna 'Desconto' para exibir apenas o valor numérico
+# A função lambda é usada aqui para remover o símbolo '%' da string na coluna 'Desconto'
 df['Desconto'] = df['Desconto'].apply(lambda x: x.split('%')[0].strip())
-
-# Exibir o DataFrame resultante
-print(df[['Condicao_Atual', 'Qtd_Vendidos', 'Desconto']])
